@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/checkmarks">
+        <file>images/check17px.png</file>
+        <file>images/save25.png</file>
+    </qresource>
+    <qresource prefix="/arrrows">
+        <file>images/img_78311.png</file>
+        <file>images/img_78312.png</file>
+        <file>images/img_78313.png</file>
+        <file>images/img_78314.png</file>
+    </qresource>
+</RCC>
