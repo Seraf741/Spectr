@@ -16,24 +16,21 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    Spctr_data_processing.cpp \
-    data_source.cpp \
     grafik.cpp \
     main.cpp \
+    mainwindow.cpp \
     qcustomplot.cpp \
     readfilepath.cpp
 
 HEADERS += \
-    Spctr_data_processing.h \
-    data_source.h \
     grafik.h \
+    mainwindow.h \
     qcustomplot.h \
-    readfilepath.h \
-    shablon.h
+    readfilepath.h
 
 FORMS += \
-    Spctr_data_processing.ui \
     grafik.ui \
+    mainwindow.ui \
     readfilepath.ui
 
 # Default rules for deployment.

@@ -1,0 +1,756 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1104</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QCustomPlot" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>505</y>
+      <width>1096</width>
+      <height>10</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1096</width>
+      <height>148</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetFixedSize</enum>
+     </property>
+     <property name="bottomMargin">
+      <number>5</number>
+     </property>
+     <item>
+      <widget class="QListView" name="listView_2">
+       <property name="minimumSize">
+        <size>
+         <width>450</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>2000</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(165, 157, 176);</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="groupBox_2">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>400</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>400</width>
+         <height>100</height>
+        </size>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="title">
+        <string>масштабирование</string>
+       </property>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="0">
+         <widget class="QCheckBox" name="ZoomOnX_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>70</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QCheckBox::indicator:unchecked{
+   background-color: rgb(160, 152, 174);
+   border: 1px solid rgb(49, 66, 66);
+}
+QCheckBox::indicator:checked:pressed {
+     background-color: rgb(40, 49, 83);
+ }
+QCheckBox::indicator:unchecked:pressed {
+     background-color: rgb(40, 49, 83);
+ }
+QCheckBox::indicator:checked
+  {
+    background-color: rgb(160, 152, 174);
+    border: 1px solid rgb(49, 66, 66);
+    image: url(:/new/prefix1/images/check17px.png);
+  }</string>
+          </property>
+          <property name="text">
+           <string>по оси Х</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="X_Cord_2">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>20</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: qlineargradient(spread:pad, x1:0.208, y1:0.955, x2:1, y2:1, stop:0 rgba(109, 112, 129, 255), stop:1 rgba(125, 128, 147, 255));</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QToolButton" name="zoomplus_x_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+          </property>
+          <property name="text">
+           <string>+</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QToolButton" name="zoomminus_x_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+          </property>
+          <property name="text">
+           <string>-</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QToolButton" name="right_x_scale_but_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/l.webp</normaloff>:/images/l.webp</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5">
+         <widget class="QToolButton" name="left_x_scale_but_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/r.webp</normaloff>:/images/r.webp</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="6">
+         <widget class="QToolButton" name="resetbut_x_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+          </property>
+          <property name="text">
+           <string>R</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="ZoomOnY_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QCheckBox::indicator:unchecked{
+   background-color: rgb(160, 152, 174);
+   border: 1px solid rgb(49, 66, 66);
+}
+QCheckBox::indicator:checked:pressed {
+     background-color: rgb(40, 49, 83);
+ }
+QCheckBox::indicator:unchecked:pressed {
+     background-color: rgb(40, 49, 83);
+ }
+QCheckBox::indicator:checked
+  {
+    background-color: rgb(160, 152, 174);
+    border: 1px solid rgb(49, 66, 66);
+    image: url(:/new/prefix1/images/check17px.png);
+  }</string>
+          </property>
+          <property name="text">
+           <string>по оси У</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="Y_Cord_2">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: qlineargradient(spread:pad, x1:0.208, y1:0.955, x2:1, y2:1, stop:0 rgba(109, 112, 129, 255), stop:1 rgba(125, 128, 147, 255));</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <widget class="QToolButton" name="zoomplus_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+          </property>
+          <property name="text">
+           <string>+</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="3">
+         <widget class="QToolButton" name="zoomminus_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+          </property>
+          <property name="text">
+           <string>-</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QToolButton" name="up_y_scale_but_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/img_78311.png</normaloff>:/images/img_78311.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="5">
+         <widget class="QToolButton" name="down_y_scale_but_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="images.qrc">
+            <normaloff>:/images/i.webp</normaloff>:/images/i.webp</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="6">
+         <widget class="QToolButton" name="resetbut_2">
+          <property name="maximumSize">
+           <size>
+            <width>25</width>
+            <height>25</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QToolButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+          </property>
+          <property name="text">
+           <string>R</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <property name="spacing">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QComboBox" name="GrafList_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>25</width>
+           <height>20</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="DispCoordValue_2">
+         <property name="styleSheet">
+          <string notr="true">QCheckBox::indicator:unchecked{
+   background-color: rgb(160, 152, 174);
+   border: 1px solid rgb(49, 66, 66);
+}
+QCheckBox::indicator:checked:pressed {
+     background-color: rgb(40, 49, 83);
+ }
+QCheckBox::indicator:unchecked:pressed {
+     background-color: rgb(40, 49, 83);
+ }
+QCheckBox::indicator:checked
+  {
+    background-color: rgb(160, 152, 174);
+    border: 1px solid rgb(49, 66, 66);
+    image: url(:/new/prefix1/images/check17px.png);
+  }</string>
+         </property>
+         <property name="text">
+          <string>вывод координат</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="FindPeaks_2">
+         <property name="styleSheet">
+          <string notr="true">QCheckBox::indicator:unchecked{
+   background-color: rgb(160, 152, 174);
+   border: 1px solid rgb(49, 66, 66);
+}
+QCheckBox::indicator:checked:pressed {
+     background-color: rgb(40, 49, 83);
+ }
+QCheckBox::indicator:unchecked:pressed {
+     background-color: rgb(40, 49, 83);
+ }
+QCheckBox::indicator:checked
+  {
+    background-color: rgb(160, 152, 174);
+    border: 1px solid rgb(49, 66, 66);
+    image: url(:/new/prefix1/images/check17px.png);
+  }</string>
+         </property>
+         <property name="text">
+          <string>Поиск пиков</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="FindPeaksWidget_2" native="true">
+         <property name="minimumSize">
+          <size>
+           <width>230</width>
+           <height>50</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>230</width>
+           <height>50</height>
+          </size>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_6">
+          <item>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="1" column="1">
+             <widget class="QLineEdit" name="IntervalBetweenPeaks_2">
+              <property name="minimumSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>10</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="label_3">
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>10</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Шаг (Гц)</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_4">
+              <property name="maximumSize">
+               <size>
+                <width>50</width>
+                <height>10</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Кол-во</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLineEdit" name="NumOfPeaks_2">
+              <property name="minimumSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>5</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="FindPeaksButton_2">
+              <property name="minimumSize">
+               <size>
+                <width>60</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="maximumSize">
+               <size>
+                <width>60</width>
+                <height>20</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QPushButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+}</string>
+              </property>
+              <property name="text">
+               <string>найти</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_7">
+         <item alignment="Qt::AlignLeft">
+          <widget class="QCheckBox" name="MovingAverage_2">
+           <property name="minimumSize">
+            <size>
+             <width>100</width>
+             <height>10</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>165</width>
+             <height>10</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QCheckBox::indicator:unchecked{
+   background-color: rgb(160, 152, 174);
+   border: 1px solid rgb(49, 66, 66);
+}
+QCheckBox::indicator:checked:pressed {
+     background-color: rgb(40, 49, 83);
+ }
+QCheckBox::indicator:unchecked:pressed {
+     background-color: rgb(40, 49, 83);
+ }
+QCheckBox::indicator:checked
+  {
+    background-color: rgb(160, 152, 174);
+    border: 1px solid rgb(49, 66, 66);
+    image: url(:/new/prefix1/images/check17px.png);
+  }</string>
+           </property>
+           <property name="text">
+            <string>Усреднение</string>
+           </property>
+          </widget>
+         </item>
+         <item alignment="Qt::AlignLeft">
+          <widget class="QSpinBox" name="sizeOfAveraging_2">
+           <property name="minimumSize">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>47</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <item>
+          <widget class="QPushButton" name="Reset_2">
+           <property name="maximumSize">
+            <size>
+             <width>100</width>
+             <height>15</height>
+            </size>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton{
+  background-color: rgb(250, 151, 37);
+  border-radius: 3px ;
+  border: 2px solid rgb(188, 188, 227);
+
+}</string>
+           </property>
+           <property name="text">
+            <string>Сброс</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="SaveDataGrafs_txt_2">
+           <property name="minimumSize">
+            <size>
+             <width>25</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>25</width>
+             <height>20</height>
+            </size>
+           </property>
+           <property name="text">
+            <string>...</string>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normalon>:/new/prefix1/images/save25.png</normalon>
+            </iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>26</width>
+             <height>26</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1104</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="images.qrc"/>
+ </resources>
+ <connections/>
+</ui>

@@ -2,7 +2,7 @@
 #define GRAFIK_H
 
 #include <QDialog>
-#include "Spctr_data_processing.h"
+#include "mainwindow.h"
 #include <QSpinBox>
 #include "QStandardItemModel"
 #include "qcustomplot.h"
@@ -20,21 +20,8 @@ public:
     //~grafik();
 
 private:
-
-//    class MyItemText : public QCPItemText
-//    {
-//    public:
-//        MyItemText(QCustomPlot *parentplot) : QCPItemText(parentplot)
-//        {
-//            but = new QPushButton("X",parentplot);
-//            but->setFixedSize(100,100);
-//        }
-//    private:
-//        QPushButton *but;
-//    //private slots:
-//    };
     Ui::grafik *ui;
-    MainWindow::tPolar *tpolar = nullptr;                                                                                                                             //  - структура с данными для построения графика
+    MainWindow::tPolar *tpolar;                                                                                                                             //  - структура с данными для построения графика
     Qt::GlobalColor color_grf[7]{ Qt::red,Qt::black,Qt::darkMagenta,Qt::blue,Qt::green,Qt::darkRed,Qt::darkGray};                                            //  - массив цветов для графиков
     QColor color_inform_window_background[7]{QColor(255,148,148),QColor(169,169,169),QColor(209,142,209),QColor(127,179,255),QColor(179,255,179),QColor(204,102,102),QColor(190,190,190)};
     QStandardItemModel *model_for_selecting_grafs;                                                                      //  - встраиваемая модель, содержащая чекбоксы для вкл/откл графиков, в выпадающий список
@@ -62,7 +49,7 @@ signals:
 
 private slots:
     void ShowGraf();                                            // функция постройки и отображения графиков
-    void receiveDataOfGrafik(MainWindow::tPolar &tpolar, bool);
+    void receiveDataOfGrafik(MainWindow::tPolar &tpolar);
     void SetGrafList(QStringList grfs_names, int &ngrf);                            //  - функция создает модель, ее элементы (чекбоксы) и добавляет в выпадающий список
     void SetGrafInfo(QStringList info_of_grafs, int ngrf);                         //  - функция создает модель, содержащую информацию о графиках (отображается в верхнем левом углу программы)
     void SetGrafListForShowCoord(QStringList grfs_names, int &ngrf);
@@ -98,7 +85,6 @@ private slots:
     void on_FindPeaksButton_clicked();
     void on_SaveDataGrafs_txt_clicked();
     void addPlottable(QCPAbstractPlottable *plottable);
-    void updateChartsData();
 };
 
 #endif // GRAFIK_H

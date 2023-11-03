@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/data_files">
+        <file>files/spectr_01_d24_07_2020_t03_49_25V_31_08_2020_08_27_10.dxt</file>
+        <file>files/spectr_01_d24_07_2020_t03_49_25V_31_08_2020_08_27_10.gxt</file>
+    </qresource>
+</RCC>

@@ -38,243 +38,49 @@ grafik::grafik(QWidget *parent) :
 
 //    delete ui;
 //}
-
-QString IsNan(qreal value)
-{
-    if (value != value) {
-        return "NaN";
-    } else if (value > std::numeric_limits<qreal>::max()) {
-        return "+Inf";
-    } else if (value < -std::numeric_limits<qreal>::max()) {
-        return "-Inf";
-    } else
-        return "";
-}
-
 /*
  -----------------------------------------------------------------------------------------------
  функция принимает структуру с данными и вызывает функции создания модели и постройки графиков
  -----------------------------------------------------------------------------------------------
 */
-void grafik::receiveDataOfGrafik(MainWindow::tPolar &tpolar1, bool params_data_changed)
+void grafik::receiveDataOfGrafik(MainWindow::tPolar &tpolar1)
 {
-    if(tpolar != nullptr)
-    {
-        delete tpolar;
-    }
     tpolar = new MainWindow::tPolar(tpolar1);
-
-    if(params_data_changed)
-    {
-        qDebug()<<"TEST 1";
-        SetGrafList(tpolar->grfsnames, tpolar->nfun);                 //  - вызываем функцию, которая создает выпадающий список с названиями графиков
-        SetGrafInfo(tpolar->params, tpolar->params.size());          //  - вызываем функцию, которая добавляет информацию о графиках в ListView
-        SetGrafListForShowCoord(tpolar->grfsnames, tpolar->nfun);   //  - вызываем функцию, которая создает выпадающий список с названиями графиков для выбора нужного для дальнейшего отображения координат его точек
-        connect(ui->GrafList->model(),SIGNAL(dataChanged(const QModelIndex&,const QModelIndex&)),this,SLOT(ChangeGrafsForShow(const QModelIndex&,const QModelIndex&)));
-        order_of_grafs = new int [tpolar->nfun];
-        data_grafs = new float *[tpolar->nfun];
-        average_deviation = QVector<float>(tpolar->nfun);
-        for (int i = 0; i < tpolar->nfun; i++) {
-            data_grafs[i] = new float [tpolar->num_of_points];                                //  - создаем двумерный массив для хранения координат крафиков
-            for (int j = 0; j < tpolar->num_of_points; j++)
+    SetGrafList(tpolar->grfsnames, tpolar->nfun);                 //  - вызываем функцию, которая создает выпадающий список с названиями графиков
+    SetGrafInfo(tpolar->params, tpolar->params.size());          //  - вызываем функцию, которая добавляет информацию о графиках в ListView
+    SetGrafListForShowCoord(tpolar->grfsnames, tpolar->nfun);   //  - вызываем функцию, которая создает выпадающий список с названиями графиков для выбора нужного для дальнейшего отображения координат его точек
+    connect(ui->GrafList->model(),SIGNAL(dataChanged(const QModelIndex&,const QModelIndex&)),this,SLOT(ChangeGrafsForShow(const QModelIndex&,const QModelIndex&)));
+    order_of_grafs = new int [tpolar->nfun];
+    data_grafs = new float *[tpolar->nfun];
+    average_deviation = QVector<float>(tpolar->nfun);
+    for (int i = 0; i < tpolar->nfun; i++) {
+        data_grafs[i] = new float [tpolar->num_of_points];                                //  - создаем двумерный массив для хранения координат крафиков
+        for (int j = 0; j < tpolar->num_of_points; j++)
+        {
+            data_grafs[i][j] = tpolar->data_y[i][j];
+            if(j != 0)                                   // - считаем среднюю разницу между смежными точками, чтобы при усредении не пропадали дискреты
             {
-                data_grafs[i][j] = tpolar->data_y[i][j];
-                if(j != 0)                                   // - считаем среднюю разницу между смежными точками, чтобы при усредении не пропадали дискреты
+                float val_av = data_grafs[i][j] - data_grafs[i][j - 1];
+                if(val_av < 0)
                 {
-                    float val_av = data_grafs[i][j] - data_grafs[i][j - 1];
-                    if(val_av < 0)
-                    {
-                        average_deviation[i] += val_av * (-1);
-                    }
-                    else
-                    {
-                        average_deviation[i] += val_av;
-                    }
+                    average_deviation[i] += val_av * (-1);
                 }
-            }
-            qDebug()<<"TEST 2";
-            average_deviation[i] /= tpolar->num_of_points - 1;
-            //QMessageBox::about(this,"","average " + QString::number(i + 1) + " = " + QString::number(average_deviation[i]));
-            order_of_grafs[i] = i;                                                       //  - добавляем номер графика отображения
-        }
-        quantity_of_grafs = tpolar->nfun;
-
-        ui->ZoomOnX->adjustSize();
-        ui->ZoomOnY->adjustSize();
-        qDebug()<<"TEST 3";
-        ShowGraf();
-    }
-    else
-    {
-        for(int i = 0; i < tpolar->nfun; i++)
-        {
-            delete[] data_grafs[i];
-        }
-        for (int i = 0; i < tpolar->nfun; i++) {
-            data_grafs[i] = new float [tpolar->num_of_points];                                //  - создаем двумерный массив для хранения координат крафиков
-            for (int j = 0; j < tpolar->num_of_points; j++)
-            {
-                data_grafs[i][j] = tpolar->data_y[i][j];
-                if(j != 0)                                   // - считаем среднюю разницу между смежными точками, чтобы при усредении не пропадали дискреты
-                {
-                    float val_av = data_grafs[i][j] - data_grafs[i][j - 1];
-                    if(val_av < 0)
-                    {
-                        average_deviation[i] += val_av * (-1);
-                    }
-                    else
-                    {
-                        average_deviation[i] += val_av;
-                    }
-                }
-            }
-        }
-
-        updateChartsData();
-    }
-}
-
-void grafik::updateChartsData()
-{
-    qDebug()<<" \n";
-    for(int i = 0; i < ui->widget->legend->elementCount(); i++)
-    {
-        qDebug()<<"legend 1 el "<<i<<" = "<<ui->widget->legend->elementAt(i);
-    }
-
-    for(int i = 0; i < ui->widget->plottableCount(); i++)
-        {
-            qDebug()<<" order graf1 = "<<i<<" name = "<<ui->widget->plottable(i)->name();
-
-        }
-
-//    for(int i = 0; i < quantity_of_grafs; i++)
-//    {
-//        for(int j = 0; j < ui->widget->plottableCount(); j++)
-//        {
-//            if(ui->widget->plottable(j)->name() == tpolar->grfsnames[i])
-//            {
-//                ui->widget->removePlottable(j);
-//            }
-//        }
-//    }
-
-    qDebug()<<" \n";
-    for(int i = 0; i < ui->widget->plottableCount(); i++)
-        {
-            qDebug()<<" order graf2 = "<<i<<" name = "<<ui->widget->plottable(i)->name()<< " pointer = "<<ui->widget->plottable(i);
-
-        }
-
-    QStringList secondary_plots_names;                      //  - после очистки структуры хранения всех графиков от графиков спекторв копируем имена второстепенных графиков,
-    for(int i = 0; i < ui->widget->plottableCount(); i++)   //  - чтобы потом присвоить их обратно после создания основных графиков (спектра). Так как функция создания новых графиков почему-то
-    {                                                      //  - переименовывает старые графики -\_(-_-)_/-
-        secondary_plots_names.append(ui->widget->plottable(i)->name());
-    }
-
-
-    int numgraf, init_pos;
-    if (order_of_grafs != nullptr)
-    {
-        if (tpolar->oktav_mode == 1) { //ищем ближайшую 1/3 октаву
-            int closest_frq;
-            bool foundAnyClosest = false;
-            for (auto num : FrqList) {
-                if (num.toFloat() <= tpolar->init_x)
-                    if (!foundAnyClosest) {
-                        closest_frq = num.toFloat();
-                        foundAnyClosest = true;
-                    } else if (num.toFloat() > closest_frq) {
-                        closest_frq = num.toFloat();
-                    }
-            }
-            init_pos = FrqList.indexOf(QString::number(closest_frq)); //позиция октавы
-        }
-
-        ui->widget->legend->clearItems();
-        for(int i = 0; i < quantity_of_grafs; i++)
-        {
-            for(int k = 0; k < ui->widget->plottableCount(); k++)
-                {
-                    qDebug()<<" order graf into cycle BEFORE = "<<k<<" name = "<<ui->widget->plottable(k)->name();
-
-                }
-            qDebug()<<" \n";
-
-            numgraf = i;                 //  - номер текущего графика
-            QVector<double> x(tpolar->num_of_points), y(tpolar->num_of_points);     //  - векторы для хранения точек графика
-
-            for(int j = 0; j<tpolar->num_of_points; j++)
-            {
-                if(tpolar->oktav_mode==1)
-                    x[j] = FrqList.at(init_pos+j).toFloat();
                 else
-                    x[j] = tpolar->init_x + tpolar->samp_freq * j;
-                y[j] = data_grafs[numgraf][j];
-            }
-
-            for(int j = 0; j < tpolar->grfsnames.size(); j++)
-            {
-                if(tpolar->grfsnames[j] == ui->widget->graph(numgraf)->name())
                 {
-                    ui->widget->graph(numgraf)->setData(x,y);
+                    average_deviation[i] += val_av;
                 }
             }
-
-//            ui->widget->addGraph();
-//            ui->widget->graph(i)->setData(x,y);
-//            ui->widget->graph(i)->setName(tpolar->grfsnames[numgraf]);            //  - устанавливаем название графика для отображения в легенде
-//            ui->widget->graph(i)->setPen(QPen(color_grf[numgraf]));     //  - устанавливаем цвет графика
-            for(int k = 0; k < ui->widget->plottableCount(); k++)
-                {
-                    qDebug()<<" order graf into cycle AFTER = "<<k<<" name = "<<ui->widget->plottable(k)->name()<< " pointer = "<<ui->widget->plottable(k);
-
-                }
-            qDebug()<<" \n\n";
         }
-
-        for(int i = 0; i < ui->widget->legend->elementCount(); i++)
-        {
-            qDebug()<<"legend 1.5 el "<<i<<" = "<<ui->widget->legend->elementAt(i);
-        }
-
-//        for(int i = 0; i < secondary_plots_names.count(); i++)
-//        {
-//            ui->widget->plottable(tpolar->nfun + i)->setName(secondary_plots_names[i]);
-//            for(int j = 0; j < ui->widget->plottableCount(); j++)
-//            {
-//                if(ui->widget->plottable(j)->name() == secondary_plots_names[i])
-//                {
-
-//                }
-//            }
-            //ui->widget->legend->removeItem(tpolar->nfun + i);
-//        }
-
-        qDebug()<<" \n";
-        for(int i = 0; i < ui->widget->legend->elementCount(); i++)
-        {
-            qDebug()<<"legend 2 el "<<i<<" = "<<ui->widget->legend->elementAt(i);
-        }
-
-        for(int i = 0; i < ui->widget->plottableCount(); i++)
-            {
-                qDebug()<<" order graf3 = "<<i<<" name = "<<ui->widget->plottable(i)->name();
-
-            }
-
-        ui->widget->replot();
-
-        qDebug()<<" \n";
-        for(int i = 0; i < ui->widget->legend->elementCount(); i++)
-        {
-            qDebug()<<"legend 3 el "<<i<<" = "<<ui->widget->legend->elementAt(i);
-        }
-
-        qDebug()<<" \n\n";
+        average_deviation[i] /= tpolar->num_of_points - 1;
+        //QMessageBox::about(this,"","average " + QString::number(i + 1) + " = " + QString::number(average_deviation[i]));
+        order_of_grafs[i] = i;                                                       //  - добавляем номер графика отображения
     }
-}
+    quantity_of_grafs = tpolar->nfun;
 
+    ui->ZoomOnX->adjustSize();
+    ui->ZoomOnY->adjustSize();
+    ShowGraf();
+}
 /*
  -----------------------------------------------------------------------------------------------
  функция берет данные из структуры tpolar и массива с номерами графиков для отображения,
@@ -335,7 +141,6 @@ void grafik::ShowGraf()
             << "80000"; //таблица 1/3 октавных частот
     int numgraf,init_pos;
     ui->widget->clearGraphs();     //  - очищаем координатную плоскость
-    ui->widget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
     //qDebug()<<"num of fun"<<tpolar->nfun;
     // Отключаем масштабирование по осям и вывод значений графика
 //    ui->ZoomOnX->setChecked(false);
@@ -357,14 +162,6 @@ void grafik::ShowGraf()
         delete tracer;
     }
     qDebug()<<"num_of_grafs = "<< ui->widget->plottableCount();
-
-    qDebug()<<"\n\n";
-    for(int i = 0; i < ui->widget->plottableCount(); i++)
-        {
-            qDebug()<<" order graf showgrf 1 = "<<i<<" name = "<<ui->widget->plottable(i)->name();
-
-        }
-
     if (order_of_grafs != nullptr)
     {
         if (tpolar->oktav_mode == 1) { //ищем ближайшую 1/3 октаву
@@ -406,13 +203,6 @@ void grafik::ShowGraf()
 //            }
         }
 
-        qDebug()<<"\n\n";
-        for(int i = 0; i < ui->widget->plottableCount(); i++)
-            {
-                qDebug()<<" order graf showgrf 2 = "<<i<<" name = "<<ui->widget->plottable(i)->name();
-
-            }
-
         if(ui->FindPeaks->isChecked())
         {
             int num = quantity_of_grafs;
@@ -425,7 +215,6 @@ void grafik::ShowGraf()
         else
         {
             ui->widget->addGraph();
-            ui->widget->graph(ui->widget->graphCount() - 1)->setName("peak_Grf");
         }
         ui->widget->legend->removeItem(ui->widget->legend->itemCount() - 1);            //  - удаляем из легенды добавленный в условии выше график
 
@@ -440,7 +229,7 @@ void grafik::ShowGraf()
             ui->widget->yAxis->setLabel("y,  Дб");
         }
 
-        if (tpolar->mode_exe == "-CtrSpPr") {
+        if (tpolar->mode_exe == "-CтрSpPr") {
             ui->widget->xAxis->setLabel("x,  cек.");
             ui->widget->yAxis->setLabel("y,  Дб");
         }
@@ -464,15 +253,6 @@ void grafik::ShowGraf()
             xshift = (xMax-xMin)*0.25;
             xcur_min = xMin;
             xcur_max = xMax;
-//            if (IsNan(data_grafs[order_of_grafs[0]][0]) == "NaN")
-//                yMin = 0;
-//            else
-//                yMin = data_grafs[order_of_grafs[0]][0];
-//            if (IsNan(data_grafs[order_of_grafs[0]][0]) == "NaN")
-//                yMax = 0;
-//            else
-//                yMax = data_grafs[order_of_grafs[0]][0];
-//            qDebug() << data_grafs[order_of_grafs[0]][0];
             yMin = data_grafs[order_of_grafs[0]][0], yMax = data_grafs[order_of_grafs[0]][0];
             // цикл для выбора начального значения для поиска нижней границы масштаба оси у
             for (int i = 0; i < tpolar->num_of_points - 1; i++) {
@@ -511,12 +291,6 @@ void grafik::ShowGraf()
         cur_max = yMax;
         //ui->widget->legend->removeItem(5);
         ui->widget->legend->setVisible(true);
-        qDebug()<<"\n\n";
-        for(int i = 0; i < ui->widget->plottableCount(); i++)
-            {
-                qDebug()<<" order graf showgrf 3 = "<<i<<" name = "<<ui->widget->plottable(i)->name();
-
-            }
         ui->widget->replot();
         if(ui->DispCoordValue->isChecked())
         {
@@ -697,18 +471,6 @@ void grafik::ChangeGrafsForShow(const QModelIndex& numgrf,const QModelIndex& unu
 //    ui->FindPeaks->setChecked(false);
 //    scale_changed = false;
 
-    /*for(int i = 0; i < quantity_of_grafs; i++)    // - проверка отображения имени графика из модели выбора отображаемых графиков
-    {
-        qDebug()<<" order graf = "<<order_of_grafs[i]<<" name = "<<ui->widget->graph(i)->name()<<" del grf num = "<<model_for_selecting_grafs->itemFromIndex(numgrf)->text();
-
-    }*/
-    for(int k = 0; k < ui->widget->plottableCount(); k++)
-        {
-            qDebug()<<" order graf change grf = "<<k<<" name = "<<ui->widget->plottable(k)->name();
-
-        }
-    qDebug()<<" \n\n";
-
     int *new_order_of_grafs;
     if (model_for_selecting_grafs->itemFromIndex(numgrf)->checkState() == Qt::Unchecked)        //  - если пользователь снял выделение какого-то чекбокса, соответствующего графику
     {
@@ -818,9 +580,7 @@ void grafik::on_ZoomOnX_stateChanged(int arg1)
             return;                                      //  - выходим из функции
         }
         border_lines[0] = new QCPCurve(ui->widget->xAxis, ui->widget->yAxis);   //  - создаем первую линию границы
-        border_lines[0]->setName("border_line_x_0");
         del_me_num++;
-
         //qDebug()<<"created 1 element border_line_num = "<<border_line_num;
         //qDebug()<<"del_me_num"<<del_me_num;
         //qDebug()<<"1 count plot x = "<<ui->widget->plottableCount();
@@ -879,7 +639,6 @@ void grafik::on_ZoomOnY_stateChanged(int arg1)
             return;                                      //  - выходим из функции
         }
         border_lines[0] = new QCPCurve(ui->widget->xAxis, ui->widget->yAxis);   //  - создаем первую линию границы
-        border_lines[0]->setName("border_line_y_0");
         del_me_num++;
         //qDebug()<<"created 1 element border_line_num = "<<border_line_num;
         //qDebug()<<"del_me_num"<<del_me_num;
@@ -955,14 +714,6 @@ void grafik::SlotMouseMove(QMouseEvent *event)
         if(border_line_num != 0 && border_lines[border_line_num] == nullptr)      //  - если 2 линия еще не создана
         {
             border_lines[border_line_num] = new QCPCurve(ui->widget->xAxis,ui->widget->yAxis);
-            if(ui->ZoomOnX->isChecked())
-            {
-                border_lines[border_line_num]->setName("border_line_x_1");
-            }
-            else if(ui->ZoomOnY->isChecked())
-            {
-                border_lines[border_line_num]->setName("border_line_y_1");
-            }
             addPlottable(border_lines[border_line_num]);
             qDebug()<<"created 2 element";
         }
@@ -1053,12 +804,6 @@ void grafik::SlotMousePress(QMouseEvent *event)
             on_ZoomOnY_stateChanged(1);
         }
     }
-
-    for(int i = 0; i < ui->widget->plottableCount(); i++)    // - проверка отображения имени графика из модели выбора отображаемых графиков
-        {
-            qDebug()<<" order graf = "<<i<<" name = "<<ui->widget->plottable(i)->name();
-
-        }
 
 }
 /*
